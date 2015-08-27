@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+<style>
+    #Info{
+
+        border-collapse: collapse;
+        border: 1px solid black;
+    }
+</style>
+	<form method="POST" enctype="multipart/form-data">
+    <div align="center">
+        <table id = "Info" bgcolor= silver>
+            <tbody>
+                <td style="vertical-align:top;width:50%;">
+                    <table id="Info" cellpadding="5"  cellspacing="0" border="1" align="center" bgcolor="gray">
+                        <thead>
+                            <!--p style="text-align: center;text-decoration: underline">Update - Date : {{ date }}</p-->
+							<p style="text-align: center;"><Add a Product</b></p>
+                        </thead>
+                        <tbody>
+							<p style="text-align: center;"><b>Please Fill In the Information</b></p>
+
+							{% csrf_token %}{{form.as_table}}
+                            <tr>
+								<td></td>
+								<td nowrap="nowrap" width="100%">
+								
+								<input type="submit" name="add" value="add" /></td>
+                                <!--td nowrap="nowrap" width="100%">{{ ranking.last_ranking }}</td-->
+                            </tr>
+		
+							
+                        </tbody>
+                    </table>
+					{% if msg %}
+						<p><b><center><font color="red"><font size="18">{{ msg }}</b></p>
+					{% endif %}
+                </td>
+        </table>
+    </div>
+	</form>
+{% endblock %}

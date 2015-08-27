@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+<style>
+    #Info{
+
+        border-collapse: collapse;
+        border: 1px solid black;
+    }
+</style>
+	<form method = "GET">
+    <div align="center">
+        <table id = "Info" bgcolor= silver>
+            <tbody>
+                <td style="vertical-align:top;width:50%;">
+                    <table id="Info" cellpadding="5"  cellspacing="0" border="1" align="center" bgcolor="gray">
+                        <thead>
+                            <!--p style="text-align: center;text-decoration: underline">Update - Date : {{ date }}</p-->
+							<p style="text-align: center;"><b>MK's bid system</b></p>
+							<p style="text-align: center;"nowrap="nowrap" nowrap="nowrap" width="100%" style="text-align: center;">Sort by:
+								<select name="dropdown" id="dropdown">
+								<option value="popularity" {% if request.GET.dropdown == "popularity" %}selected{% endif %}>popularity</option>
+								<option value="name" {% if request.GET.dropdown == "name" %}selected{% endif %}>name</option>
+								<option value="bid_price" {% if request.GET.dropdown == "bid_price" %}selected{% endif %}>price</option>
+								<option value="expire_date" {% if request.GET.dropdown == "expire_date" %}selected{% endif %}>expire_date</option>
+								</select>
+							<input type="text" name = "search_product" value="">
+							<input type="submit" name="search" value="Search"></p>
+                        </thead>
+                        <tbody>
+							{% if msg %}
+								<p><b><center>{{ msg }}</center></b></p>
+							{% endif %}
+							
+							<tr>
+								<td nowrap="nowrap" style="font-weight: bold; line-height: 2em;">
+								</td>
+								</select>
+								</td>
+
+							</tr>
+							
+                            <tr>
+                                <td nowrap="nowrap" style="font-weight: bold; line-height: 2em;">No.</td>
+                                <td nowrap="nowrap" style="font-weight: bold; line-height: 2em;">Product</td>
+                                <td nowrap="nowrap" style="font-weight: bold; line-height: 2em;">Initial Price</td>
+								<td nowrap="nowrap" style="font-weight: bold; line-height: 2em;">Current Price</td>
+								<td nowrap="nowrap" style="font-weight: bold; line-height: 2em;">Expiring Date</td>
+								<td nowrap="nowrap" style="font-weight: bold; line-height: 2em;">Your Bid</td>
+                                <!--td nowrap="nowrap" style="font-weight: bold; line-height: 2em;">Last Ranking</td-->
+                            </tr>
+                        {% if rankings %}
+                        {% for ranking in rankings %}
+                            <tr>
+                                <td nowrap="nowrap" width="100%">{{ forloop.counter }}</td>
+                                <td nowrap="nowrap" width="100%"><p style="text-align: left">{{ ranking.name }}</p>
+								<!--<a href={{ranking.website}}>-->
+								
+								<a href="http://127.0.0.1:8000/bid/description/{{ ranking.id}}">
+								<img src="{{MEDIA_URL}}{{ranking.photo}}" alt="Image not found" style=" max-height:128px;max-width:128px;" align ="left"></a></td>
+                                <td nowrap="nowrap" width="100%">{{ ranking.price }}</td>
+							    <td nowrap="nowrap" width="100%">{{ ranking.bid_price }}</td>
+								<td nowrap="nowrap" width="100%">{{ ranking.expire_date }}</td>
+								<td nowrap="nowrap" width="100%"><input type="text" name="{{ranking.id}}_try_price" />
+								<input type="submit" name="{{ranking.id}}_bid" value="Bid" />
+                                <input type="submit" name="{{ranking.id}}_pay" value="Pay" /></td>
+                            </tr>
+                        {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3" nowrap="nowrap">
+                                    <h4 style="text-align: center">No Product Found</h4>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </td>
+        </table>
+		<input type="submit" name="addproduct" value="add product" /></td>
+		<input type="submit" name="excel" value="excel" /></td>
+		<input type="submit" name="upload" value="upload image" /></td>
+		<input type="submit" name="showimage" value="show image" /></td>
+    </div>
+	</form>
+{% endblock %}

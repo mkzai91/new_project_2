@@ -1,0 +1,13 @@
+<div>
+    <div id = "menu"  align="right">
+        Hi, {{ status.name}}
+        <a id = "button" href="/bid/login">log out</a>
+    </div>
+
+	<a href="http://127.0.0.1:8000/bid/">
+	<img src="/static/images/download.png" alt="Image not found" width="150" height="100" align ="left"/></a>
+    <div>
+     {% block content %}{% endblock %}
+    </div>
+</div>
+

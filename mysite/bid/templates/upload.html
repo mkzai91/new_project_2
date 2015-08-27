@@ -1,0 +1,13 @@
+...................        
+{% block body %}
+
+	<a href="http://127.0.0.1:8000/bid/">
+	<img src="/static/images/download.png" alt="Image not found" width="150" height="120" align ="left"/></a>
+
+<form method="POST" enctype="multipart/form-data"> 
+    {% csrf_token %}    
+    {{ form.as_p }}
+    <input type="submit" value = "Upload"/>
+
+{% endblock %}
+....................

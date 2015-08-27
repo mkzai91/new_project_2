@@ -1,0 +1,38 @@
+
+<style>
+    #Info{
+
+        border-collapse: collapse;
+        border: 1px solid black;
+    }
+</style>
+	<a href="http://127.0.0.1:8000/bid/">
+	<img src="/static/images/download.png" alt="Image not found" style="width:128px;height:128px;" align ="left"/></a>
+	<form method = "GET">
+    <div align="center">
+        <table id = "Info" bgcolor= silver>
+            <tbody>
+                <td style="vertical-align:top;width:50%;">
+                    <table id="Info" cellpadding="5"  cellspacing="0" border="1" align="center" bgcolor="gray">
+                        <thead>
+							<p style="text-align: center;"><b>Description</b></p>
+                        </thead>
+                        <tbody>
+						{%for ranking in rankings%}
+							{% if msg == ranking.id %}
+								<tr>
+								<p><center><img src="{{MEDIA_URL}}{{ranking.photo}}" alt="Image not found" style= "max-width:400px;max-height:400px"" align ="left"/></p></tr>
+								<div>
+								<tr>
+								{{ ranking.description|safe }}</div></tr>
+							{% endif %}
+						{%endfor%}
+							
+   
+                        </tbody>
+                    </table>
+                </td>
+        </table>
+		<input type="submit" name="back" value="back" /></td>
+    </div>
+	</form>

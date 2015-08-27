@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+<style>
+    #Info{
+
+        border-collapse: collapse;
+        border: 1px solid black;
+    }
+</style>
+	<form method = "GET">
+    <div align="center">
+        <table id = "Info" bgcolor= silver>
+            <tbody>
+                <td style="vertical-align:top;width:50%;">
+                    <table id="Info" cellpadding="5"  cellspacing="0" border="1" align="center" bgcolor="gray">
+                        <thead>
+							<p style="text-align: center;"><b>SHOW ALL PHOTOS</b></p>
+                        </thead>
+                        <tbody>
+							{% if msg %}
+								<p><b><center>{{ msg }}</b></p>
+							{% endif %}
+							
+							
+                        {% if rankings %}
+                        {% for ranking in rankings %}
+							    <tr>
+								<a href={{MEDIA_URL}}{{ranking.pdf}}>
+								<img src="{{MEDIA_URL}}{{ranking.file}}" alt="Image not found" width="150" height="100" align ="left"/>	
+								</a>
+								</tr>
+                        {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3" nowrap="nowrap">
+                                    <h4 style="text-align: center">No Product yet</h4>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </td>
+        </table>
+		<input type="submit" name="back" value="back" /></td>
+    </div>
+	</form>
+{% endblock %}

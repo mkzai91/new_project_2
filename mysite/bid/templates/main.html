@@ -9,6 +9,11 @@
     }
 </style>
 	<form method = "GET">
+    {% if msg %}
+        <script>
+            alert('{{ msg }}');
+        </script>
+    {% endif %}
     <div align="center">
         <table id = "Info" bgcolor= silver>
             <tbody>
@@ -28,9 +33,7 @@
 							<input type="submit" name="search" value="Search"></p>
                         </thead>
                         <tbody>
-							{% if msg %}
-								<p><b><center>{{ msg }}</center></b></p>
-							{% endif %}
+
 							
 							<tr>
 								<td nowrap="nowrap" style="font-weight: bold; line-height: 2em;">
@@ -63,7 +66,7 @@
 								<td nowrap="nowrap" width="100%">{{ ranking.expire_date }}</td>
 								<td nowrap="nowrap" width="100%"><input type="text" name="{{ranking.id}}_try_price" />
 								<input type="submit" name="{{ranking.id}}_bid" value="Bid" />
-                                <input type="submit" name="{{ranking.id}}_pay" value="Pay" /></td>
+                                <input type="submit" name="{{ranking.id}}_pay" value="add to cart" ></td>
                             </tr>
                         {% endfor %}
                         {% else %}
@@ -77,6 +80,7 @@
                     </table>
                 </td>
         </table>
+        <input type="submit" name="pay" value="pay" /></td>
 		<input type="submit" name="addproduct" value="add product" /></td>
 		<input type="submit" name="excel" value="excel" /></td>
 		<input type="submit" name="upload" value="upload image" /></td>

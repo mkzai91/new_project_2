@@ -30,15 +30,21 @@ def check_login(request):
         value = request.COOKIES[ 'key1' ]
     return value
 
-def mainview(request):
-    template_name= "main.html"
-    msg= ""
 
+def mainview(request):
+    template_name = "main.html"
+    msg = ""
     ranking = models.Product.objects.all().order_by("id")
+    for rankings in ranking:
+        if float(rankings.price) > float(rankings.bid_price):
+            rankings.bid_price = rankings.price
+            rankings.save()
+    ranking = models.Product.objects.filter(expire_date__gte=datetime.date.today()).order_by("id")
     status=check_login(request)
     if not status:
         return HttpResponseRedirect('/bid/login' )
     status=models.Member.objects.get(username__exact=status)
+
     if (request.GET.get("search")):
         for rankings in ranking:
             if (request.GET.get("search_product","")) not in rankings.name:
@@ -63,16 +69,15 @@ def mainview(request):
                     msg = " Price Updated "
                     new_price_2.save()
             except:
-                msg = "please enter you bid price"
+                msg = "please enter valid bid price"
                 
     buyproducts = models.Product.objects.all()
     for buyproduct in buyproducts:
         if request.GET.get(str(buyproduct.id)+"_pay"):
-            print 111
             product = models.Product.objects.get(pk=buyproduct.id)#only get one item
             product.buyer= request.COOKIES[ 'key1' ]
             product.save()
-            return HttpResponseRedirect('/bid/checkout' )
+            msg=product.name+" added to cart"
 
 
     context = {
@@ -89,6 +94,8 @@ def mainview(request):
         return HttpResponseRedirect('/bid/upload' )
     elif (request.GET.get("excel")):
         return HttpResponse(create_excel(querys,False),content_type='application/vnd.ms-excel')
+    elif (request.GET.get("pay")):
+        return HttpResponseRedirect('/bid/checkout' )
     else:
         return render(request,template_name,context)
 
@@ -240,7 +247,7 @@ def login(request):
             msg= 'login success'
             response = HttpResponseRedirect('/bid/')
             if (request.POST.get("check")):
-                response.set_cookie(key='key1',value=username,expires=30)
+                response.set_cookie(key='key1',value=username,expires=2592000)
             else:
                 response.set_cookie(key='key1',value=username,max_age=None)
             return response
@@ -295,7 +302,6 @@ def checkout(request):
     name=request.COOKIES[ 'key1' ]
     product=models.Product.objects.filter(buyer__exact=name)
     total_price=0
-    print product
     for products in product:
         total_price +=products.price
     member=models.Member.objects.get(username__exact=name)
@@ -307,11 +313,8 @@ def checkout(request):
     })
 
     if (request.POST.get("order_now")):
-        print 1234
         if (request.POST.get('PayOption',"PayPlatform")):
-            print 431
             return HttpResponseRedirect('/bid/payment' )
-
 
 
     return render_to_response(template_name,context)
@@ -319,7 +322,6 @@ def checkout(request):
 def payment(request):
     template_name='payment.html'
     status=check_login(request)
-    print request.POST
     if not status:
         return HttpResponseRedirect('/bid/login' )
     status=models.Member.objects.get(username__exact=status)
@@ -341,6 +343,8 @@ def payment(request):
         'total_price' : total_price,
         'status':status
     })
+    if (request.POST.get("back")):
+        return HttpResponseRedirect('/bid' )
 
     return render_to_response(template_name,context)
 

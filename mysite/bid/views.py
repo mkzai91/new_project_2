@@ -14,7 +14,6 @@ from django.conf import settings
 from django import http
 
 
-
 def set_cookie(response, key, value, days_expire = 7):
   if days_expire is None:
     max_age = 365 * 24 * 60 * 60  #one year
@@ -83,7 +82,6 @@ def mainview(request):
             cartsize+=1
     status.cart_size=cartsize
     status.save()
-    print status.cart_size
 
 
     context = {
@@ -132,9 +130,7 @@ def addproduct(request):
         'status':status,
         })
     return render_to_response(template_name,context)
-  
 
-  #  return render_to_response('addproduct.html',c)
 
 def upload(request):
     messages = []
@@ -154,7 +150,7 @@ def upload(request):
 
     return render(request, 'upload.html', {'form': form,'status':status})
 
-	
+
 def showimage(request):
     template_name='showimage.html'
     ranking = models.WorkSheet.objects.all().order_by("id")
@@ -170,7 +166,6 @@ def showimage(request):
     else:
         return render_to_response(template_name,{'status':status})
 
-		
 
 def description(request):
     template_name='description.html'
@@ -178,6 +173,7 @@ def description(request):
     status=check_login(request)
     if not status:
         return HttpResponseRedirect('/bid/login' )
+    status=models.Member.objects.get(username__exact=status)
     ranking = models.Product.objects.all().order_by("id")
     msg=str(request.path)
     temp=msg
@@ -192,6 +188,22 @@ def description(request):
             d+=1
     msg = int(msg)
 
+    cartsize = 0
+    msgs = ''
+    buyproducts = models.Product.objects.filter(expire_date__gte=datetime.date.today())
+    for buyproduct in buyproducts:
+        if request.GET.get(str(buyproduct.id)+"_pay"):
+            product = models.Product.objects.get(pk=buyproduct.id)#only get one item
+            product.buyer= request.COOKIES[ 'key1' ]
+            product.save()
+            msgs=product.name+" added to cart"
+    buyproducts = models.Product.objects.filter(expire_date__gte=datetime.date.today())
+    for buyproduct in buyproducts:
+        if (buyproduct.buyer== request.COOKIES[ 'key1' ]):
+            cartsize+=1
+    status.cart_size=cartsize
+    status.save()
+
     if (request.GET.get("back")):
         return HttpResponseRedirect('/bid/' )
     else:
@@ -203,8 +215,10 @@ def description(request):
             context = RequestContext(request,{
                 'rankings': ranking,
                 'msg':msg,
+                'msgs':msgs,
             })
     return render_to_response(template_name,context)
+
 
 def create_excel(querys=None,save_internal=True):
     from openpyxl import Workbook
@@ -266,6 +280,7 @@ def login(request):
             })
     return render_to_response(template_name,context)
 
+
 def register(request):
     template_name='register.html'
     username= request.POST.get("username")
@@ -299,6 +314,7 @@ def register(request):
         return HttpResponseRedirect('/bid/login' )
     return render_to_response(template_name,context)
 
+
 def cart(request):
     template_name='cart.html'
     status=check_login(request)
@@ -324,6 +340,7 @@ def cart(request):
 
 
     return render_to_response(template_name,context)
+
 
 def payment(request):
     template_name='payment.html'

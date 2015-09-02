@@ -9,6 +9,11 @@
 	<a href="http://127.0.0.1:8000/bid/">
 	<img src="/static/images/download.png" alt="Image not found" style="width:128px;height:128px;" align ="left"/></a>
 	<form method = "GET">
+        {% if msgs %}
+        <script>
+            alert('{{ msgs }}');
+        </script>
+        {% endif %}
     <div align="center">
         <table id = "Info" bgcolor= silver>
             <tbody>
@@ -33,6 +38,7 @@
                     </table>
                 </td>
         </table>
-		<input type="submit" name="back" value="back" /></td>
+		<input type="submit" name="{{ msg }}_pay" value="add to cart" /></td>
+        <input type="submit" name="back" value="back" /></td>
     </div>
 	</form>

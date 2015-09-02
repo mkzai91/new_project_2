@@ -21,3 +21,7 @@ class WorkSheetAdmin(CustomAdmin, admin.ModelAdmin):
 class MemberAdmin(admin.ModelAdmin):
     search_fields =['username',]
     list_display=['username','name','email',]
+
+@admin.register(models.Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ['Product_ID','text']

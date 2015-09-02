@@ -37,3 +37,7 @@ class Member(models.Model):
     name = models.CharField(max_length= 150, default ='')
     email = models.CharField(max_length= 150, default ='')
     cart_size = models.IntegerField(default=0)
+
+class Review(models.Model):
+    Product_ID = models.IntegerField()
+    text = tinymce_models.HTMLField()

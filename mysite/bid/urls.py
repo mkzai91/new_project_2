@@ -13,5 +13,5 @@ urlpatterns = [
     url(r'^login', views.login, name='login'),
     url(r'^register', views.register, name='register'),
     url(r'^payment', views.payment, name='payment'),
-    url(r'^checkout', views.checkout, name='checkout'),
+    url(r'^cart', views.cart, name='cart'),
 ]

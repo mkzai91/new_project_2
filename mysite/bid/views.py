@@ -39,12 +39,11 @@ def mainview(request):
         if float(rankings.price) > float(rankings.bid_price):
             rankings.bid_price = rankings.price
             rankings.save()
-    ranking = models.Product.objects.filter(expire_date__gte=datetime.date.today()).order_by("id")
+    ranking = models.Product.objects.filter(expire_date__gte=datetime.date.today()).order_by("-total_view")
     status=check_login(request)
     if not status:
         return HttpResponseRedirect('/bid/login' )
     status=models.Member.objects.get(username__exact=status)
-
     if (request.GET.get("search")):
         for rankings in ranking:
             if (request.GET.get("search_product","")) not in rankings.name:
@@ -70,14 +69,21 @@ def mainview(request):
                     new_price_2.save()
             except:
                 msg = "please enter valid bid price"
-                
-    buyproducts = models.Product.objects.all()
+    cartsize=0
+    buyproducts = models.Product.objects.filter(expire_date__gte=datetime.date.today())
     for buyproduct in buyproducts:
         if request.GET.get(str(buyproduct.id)+"_pay"):
             product = models.Product.objects.get(pk=buyproduct.id)#only get one item
             product.buyer= request.COOKIES[ 'key1' ]
             product.save()
             msg=product.name+" added to cart"
+    buyproducts = models.Product.objects.filter(expire_date__gte=datetime.date.today())
+    for buyproduct in buyproducts:
+        if (buyproduct.buyer== request.COOKIES[ 'key1' ]):
+            cartsize+=1
+    status.cart_size=cartsize
+    status.save()
+    print status.cart_size
 
 
     context = {
@@ -94,8 +100,8 @@ def mainview(request):
         return HttpResponseRedirect('/bid/upload' )
     elif (request.GET.get("excel")):
         return HttpResponse(create_excel(querys,False),content_type='application/vnd.ms-excel')
-    elif (request.GET.get("pay")):
-        return HttpResponseRedirect('/bid/checkout' )
+    elif (request.GET.get("cart")):
+        return HttpResponseRedirect('/bid/cart' )
     else:
         return render(request,template_name,context)
 
@@ -293,8 +299,8 @@ def register(request):
         return HttpResponseRedirect('/bid/login' )
     return render_to_response(template_name,context)
 
-def checkout(request):
-    template_name='checkout.html'
+def cart(request):
+    template_name='cart.html'
     status=check_login(request)
     if not status:
         return HttpResponseRedirect('/bid/login' )
@@ -333,7 +339,9 @@ def payment(request):
             del_product = models.Product.objects.get(pk=products.id)#only get one item
             del_product.buyer = ""
             del_product.save()
-            return HttpResponseRedirect('/bid/checkout' )
+            status.cart_size-=1
+            status.save()
+            return HttpResponseRedirect('/bid/cart' )
     for products in product:
         total_price +=products.price
     member=models.Member.objects.get(username__exact=name)

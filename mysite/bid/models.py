@@ -27,16 +27,13 @@ class WorkSheet(models.Model):
     title = models.CharField(max_length= 150, default ='')
     creator = models.ForeignKey(User, default=None, blank=True, null=True)
     file = models.ImageField(upload_to='')
-    #number_of_stars = models.PositiveIntegerField(default=0)
-    #category = models.CharField(max_length = 100, default='')
     pub_date=models.DateTimeField(auto_now=True,auto_now_add=True)
     pdf= models.FileField(upload_to='')
     image = FileBrowseField("Image", max_length=200, directory="", extensions=imageextensions, blank=True, null=True, default='')
-   # pdffile = FileBrowseField("Document", max_length=200, directory="", extensions=docextensions, blank=True, null=True, default='')
-   # videofile = =FileBrowseField("Video", max_length=200, directory="", extensions=videoextensions, blank=True, null=True, default='')
 
 class Member(models.Model):
     username = models.CharField(max_length= 150, default ='')
     password = models.CharField(max_length= 15, default ='')
     name = models.CharField(max_length= 150, default ='')
     email = models.CharField(max_length= 150, default ='')
+    cart_size = models.IntegerField(default=0)

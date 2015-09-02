@@ -1,7 +1,17 @@
+<style>
+    li{
+        float: right;
+    }
+    a{
+        width: 100px;
+    }
+</style>
+
 <div>
-    <div id = "menu"  align="right">
-        Hi, {{ status.name}}
-        <a id = "button" href="/bid/login">log out</a>
+    <div  align="right">
+        Hi, {{ status.name}}&nbsp;&nbsp;&nbsp;
+        <li><a style="display: block" id = "button" href="/bid/cart">My Cart(<b>{{ status.cart_size }}</b>)</a></li>
+        <li><a style="display: block" id = "button" href="/bid/login">Log Out</a></li>
     </div>
 
 	<a href="http://127.0.0.1:8000/bid/">

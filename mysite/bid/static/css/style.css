@@ -1,0 +1,45 @@
+    .Info{
+
+        border-collapse: collapse;
+        border: 1px solid black;
+    }
+
+    .trry1 li {
+        float: right;
+        display: inline;
+    }
+
+    .trry1 a{
+        width: 100px;
+    }
+      .rating {
+      overflow: hidden;
+      display: inline-block;
+    }
+
+    .rating-input {
+      float: right;
+      width: 16px;
+      height: 16px;
+      padding: 0;
+      margin: 0 0 0 -16px;
+      opacity: 0;
+    }
+    .rating-star {
+      display: block;
+      width: 16px;
+      height: 16px;
+      background: url('http://kubyshkin.ru/samples/star-rating/star.png') 0 -16px;
+    }
+    .rating-star:hover {
+      background-position: 0 0;
+    }
+
+    .listblock ul li a {
+    padding: 5px 30px 5px 10px;
+    display: block;
+    }
+
+    .listblock ul li a:hover {
+        background: transparent url('../img/basket.png') no-repeat 3px 170px;
+    }

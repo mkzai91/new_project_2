@@ -1,23 +1,24 @@
-<style>
-    li{
-        float: right;
-    }
-    a{
-        width: 100px;
-    }
-</style>
+{% load staticfiles %}
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static "css/style.css" %}">
+    </head>
+    <body>
+        <div>
+            <div class = "trry1"align="right">
+                <a href="http://127.0.0.1:8000/bid/"><img src="/static/images/download.png" alt="Image not found" width="150" height="100" align ="left"/></a>
+                Hi, {{ status.name}}&nbsp;&nbsp;&nbsp;
+                <li style="display: inline"><a style="display: block" id = "button" href="/bid/login">Log Out</a></li>
+                <li><a style="display: block" id = "button" href="/bid/cart">My Cart(<b>{{ status.cart_size }}</b>)</a></li>
+            </div>
+        <div><br> </div>
 
-<div>
-    <div  align="right">
-        Hi, {{ status.name}}&nbsp;&nbsp;&nbsp;
-        <li><a style="display: block" id = "button" href="/bid/login">Log Out</a></li>
-        <li><a style="display: block" id = "button" href="/bid/cart">My Cart(<b>{{ status.cart_size }}</b>)</a></li>
-    </div>
+            <div>
+             {% block content %}{% endblock %}
+            </div>
+        </div>
+    </body>
+</html>
 
-	<a href="http://127.0.0.1:8000/bid/">
-	<img src="/static/images/download.png" alt="Image not found" width="150" height="100" align ="left"/></a>
-    <div>
-     {% block content %}{% endblock %}
-    </div>
-</div>
+
 

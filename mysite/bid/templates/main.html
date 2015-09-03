@@ -8,21 +8,43 @@
         border: 1px solid black;
     }
 </style>
-	<form method = "GET">
-    {% if msg %}
-        <script>
-            alert('{{ msg }}');
-        </script>
-    {% endif %}
-    <div align="center">
+<html><head></head>
+    <body>
+        <form method = "GET">
+        {% if msg %}
+            <script>
+                alert('{{ msg }}');
+            </script>
+        {% endif %}
+
+        <ul style="top:100px; position: fixed;background-color: #f1f1f1;width: 190px ">
+            <b style="font-size: 40px">Category</b>
+        <li>
+          <a href="?category=TV">TV,Audio, and others</a>
+        </li>
+                <li>
+          <a href="?category=automotive">Automotive</a>
+        </li>
+        </ul>
+
+            <ul style=" right:0px; top:30px; position: fixed;background-color: #f1f1f1;width: 190px ">
+            <b style="font-size: 20px">sponsored</b>
+                <li style="margin-top: auto">
+                  <a href="#">1st ads<img src="/static/images/dowsnload.png" alt="Image not found"style="max-width: 150px;max-height: 150px" width="150" height="150" align ="left"/></a>
+                </li>
+                <li style="margin-top: 160px">
+                <a  href="#">2nd ads<img src="/static/images/downsload.png" alt="Image not found" style="max-width: 150px;max-height: 150px"width="150" height="150" align ="left"/></a>
+                </li>
+        </ul>
+
+        <div align="center" style="margin-left: 230px; margin-right: 230px">
         <table id = "Info" bgcolor= silver>
             <tbody>
                 <td style="vertical-align:top;width:50%;">
                     <table id="Info" cellpadding="5"  cellspacing="0" border="1" align="center" bgcolor="gray">
                         <thead>
-                            <!--p style="text-align: center;text-decoration: underline">Update - Date : {{ date }}</p-->
 							<p style="text-align: center;"><b>MK's bid system</b></p>
-							<p style="text-align: center;"nowrap="nowrap" nowrap="nowrap" width="100%" style="text-align: center;">Sort by:
+							<p style="text-align: center;"nowrap="nowrap" nowrap="nowrap" width="100%" >Sort by:
 								<select name="dropdown" id="dropdown">
 								<option value="popularity" {% if request.GET.dropdown == "popularity" %}selected{% endif %}>popularity</option>
 								<option value="name" {% if request.GET.dropdown == "name" %}selected{% endif %}>name</option>
@@ -49,7 +71,7 @@
                                 <td nowrap="nowrap" width="100%">{{ forloop.counter }}</td>
                                 <td nowrap="nowrap" width="100%"><p style="text-align: left">{{ ranking.name }}</p>
 								<!--<a href={{ranking.website}}>-->
-								
+
 								<a href="http://127.0.0.1:8000/bid/description/{{ ranking.id}}">
 								<img src="{{MEDIA_URL}}{{ranking.photo}}" alt="Image not found" style=" max-height:128px;max-width:128px;" align ="left"></a></td>
                                 <td nowrap="nowrap" width="100%">{{ ranking.price }}</td>
@@ -78,4 +100,6 @@
 		<input type="submit" name="showimage" value="show image" /></td>
     </div>
 	</form>
+</body>
+</html>
 {% endblock %}

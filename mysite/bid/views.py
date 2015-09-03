@@ -55,7 +55,12 @@ def mainview(request):
             ranking = ranking.order_by("-total_view")
         else:
             ranking = ranking.order_by("expire_date")
-    
+
+
+    if (request.GET.get("category","")) == 'TV':
+        ranking = ranking.filter(name__exact="headphone")
+    elif (request.GET.get("category","")) == 'automotive':
+        ranking = ranking.filter(name__exact="boat")
     new_prices = models.Product.objects.all()
     for new_price in new_prices:
         if request.GET.get(str(new_price.id)+"_bid"):
@@ -87,7 +92,7 @@ def mainview(request):
     context = {
         'rankings': ranking,
         'msg': msg,
-        'status' : status
+        'status' : status,
         }
     querys= models.Product.objects.all().values('name','publish_date','price','expire_date','bid_price','total_view')
     if (request.GET.get("addproduct")):
@@ -187,7 +192,6 @@ def description(request):
         else:
             d+=1
     msg = int(msg)
-
     cartsize = 0
     msgs = ''
     buyproducts = models.Product.objects.filter(expire_date__gte=datetime.date.today())
